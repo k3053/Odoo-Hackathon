@@ -42,7 +42,6 @@ const Home = () => {
       const res = await axios.get(`${API_BASE}/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       setUser(res.data);
     } catch (err) {
       console.error("Error fetching user:", err);
@@ -62,6 +61,15 @@ const Home = () => {
     setPage(1);
     fetchQuestions();
   };
+
+  const toggleBlock = (index) => {
+  setQuestions((prev) => {
+    const updated = [...prev];
+    updated[index].isBlocked = !updated[index].isBlocked;
+    return updated;
+  });
+};
+
 
   const canAskQuestion = user && ["User", "Admin"].includes(user.role);
 
@@ -122,11 +130,38 @@ const Home = () => {
             </form>
           </div>
 
+           {/* Questions */}
           <div className="space-y-4">
             {questions.length === 0 ? (
               <p className="text-gray-500">No questions found.</p>
             ) : (
-              questions.map((q) => <QuestionCard key={q._id} q={q} />)
+              questions.map((q, index) => (
+                <div
+                  key={q._id}
+                  className="relative border rounded-lg p-4 bg-white shadow"
+                >
+                  <QuestionCard q={q} />
+
+                  {user?.role === "Admin" && (
+                    <button
+                      onClick={() => toggleBlock(index)}
+                      className={`absolute top-2 right-2 px-3 py-1 text-xs rounded-md font-medium ${
+                        q.isBlocked
+                          ? "bg-red-100 text-red-700"
+                          : "bg-green-100 text-green-700"
+                      } hover:opacity-90`}
+                    >
+                      {q.isBlocked ? "Unblock" : "Block"}
+                    </button>
+                  )}
+
+                  {q.isBlocked && (
+                    <p className="text-red-500 text-sm mt-2 italic">
+                      [This question is currently blocked]
+                    </p>
+                  )}
+                </div>
+              ))
             )}
           </div>
 
