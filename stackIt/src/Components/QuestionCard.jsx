@@ -1,3 +1,7 @@
+import {ThumbsUp, MessageCircle, Eye, User} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import React from 'react';
+
 const Stat = ({ icon: Icon, value }) => (
     <div className="flex items-center space-x-1 text-gray-600">
       <Icon className="w-4 h-4" />
@@ -10,7 +14,9 @@ const QuestionCard = ({ q }) => (
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-gray-800 hover:text-purple-600 cursor-pointer">
-            {q.title}
+            <Link to={`/question/${q._id}`}>
+              <h2 className="font-semibold text-lg hover:underline">{q.title}</h2>
+            </Link>
           </h3>
           <p className="text-gray-600 mt-1">{q.description}</p>
           <div className="flex items-center space-x-2 mt-2">
@@ -21,7 +27,7 @@ const QuestionCard = ({ q }) => (
         </div>
         <div className="flex flex-col items-end space-y-2 ml-4">
           <Stat icon={ThumbsUp} value={q.votes} />
-          <Stat icon={MessageCircle} value={q.answers.length} />
+          <Stat icon={MessageCircle} value={q.answerIds.length} />
           <Stat icon={Eye} value={q.views} />
         </div>
       </div>
@@ -30,7 +36,7 @@ const QuestionCard = ({ q }) => (
           <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
             <User className="w-4 h-4 text-white" />
           </div>
-          <span>{q.author.name}</span>
+          <span>{q.username}</span>
         </div>
         <span>{new Date(q.createdAt).toLocaleString()}</span>
       </div>

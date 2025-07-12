@@ -10,4 +10,6 @@ const questionSchema = new mongoose.Schema({
   username: { type: String, required: true }
 });
 
+questionSchema.index({ title: 'text', description: 'text' });
+
 module.exports = mongoose.model('Question', questionSchema);

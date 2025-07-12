@@ -3,13 +3,19 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 
 exports.register = async (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password } = req.body;
   try {
     const existingUser = await User.findOne({ username });
     if (existingUser) return res.status(400).json({ message: 'Username already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword, role });
+    
+    const newUser = new User({
+      username,
+      password: hashedPassword,
+      role: 'User'
+    });
+
     await newUser.save();
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -32,5 +38,13 @@ exports.login = async (req, res) => {
     res.status(200).json({ token, username: user.username, role: user.role });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
+exports.getMe = async (req, res) => {
+  try {
+    res.json(req.user); // user is already set by auth middleware
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch user', error: err.message });
   }
 };

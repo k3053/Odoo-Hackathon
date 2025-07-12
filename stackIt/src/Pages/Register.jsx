@@ -22,7 +22,7 @@ const Register = () => {
       const res = await axios.post('http://localhost:5000/api/users/register', form);
       if (res.data.token) {
         localStorage.setItem('token', res.data.token);
-        navigate('/'); // redirect to homepage
+        navigate('/home'); // redirect to homepage
       } else {
         navigate('/login'); // or navigate to login after success message
       }
@@ -74,7 +74,7 @@ const Register = () => {
 
         <p className="mt-4 text-sm text-center text-gray-600">
           Already have an account?{' '}
-          <Link to="/" className="text-purple-600 hover:underline">Sign in here</Link>
+          <Link to="/login" className="text-purple-600 hover:underline">Sign in here</Link>
         </p>
       </div>
     </div>

@@ -43,3 +43,19 @@ exports.acceptAnswer = async (req, res) => {
     res.status(500).json({ message: 'Error accepting answer', error: err.message });
   }
 };
+
+exports.getAnswersByQuestionId = async (req, res) => {
+  const { questionId } = req.query;
+
+  try {
+    if (!questionId) {
+      return res.status(400).json({ message: "questionId is required" });
+    }
+
+    const answers = await Answer.find({ questionId }).sort({ createdAt: -1 });
+
+    res.json(answers);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching answers", error: err.message });
+  }
+};
