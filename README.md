@@ -1,6 +1,6 @@
 # Odoo-Hackathon
 
-Lead Email: archigazdar28@gmail.com
+Lead Email: archigazdar.co22d1@scet.ac.in
 
 Team name: HackFinity
 
