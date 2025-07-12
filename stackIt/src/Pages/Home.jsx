@@ -36,12 +36,14 @@ const Home = () => {
 
   const fetchUser = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+      // const token = localStorage.getItem("token");
+      // if (!token) return;
 
-      const res = await axios.get(`${API_BASE}/users/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const userId = localStorage.getItem("username"); // 👈 fetch userId from localStorage
+      if (!userId) return;
+
+      const res = await axios.get(`${API_BASE}/users/username/${username}`);
+      console.log("Fetched user:", res.data);
       setUser(res.data);
     } catch (err) {
       console.error("Error fetching user:", err);

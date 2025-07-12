@@ -48,3 +48,15 @@ exports.getMe = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch user', error: err.message });
   }
 };
+
+exports.getUserByUsername = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username }).select('-password');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching user', error: err.message });
+  }
+};
+
+
